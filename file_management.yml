@@ -1,0 +1,42 @@
+---
+
+- hosts: all
+  become: true
+  pre_tasks:
+ 
+  - name: install updates
+    tags: always
+    apt:
+     upgrade: dist
+     update_cache: yes
+
+  - name: install apache2 package on ubuntu servers
+    apt:
+     name:
+      - apache2
+      - libapache2-mod-php
+     state: latest
+
+- hosts: groupA
+  become: true
+  tasks:
+    
+  - name: copy html file for groupA
+    copy:
+     src: files/websitegroupA.html
+     dest: /var/www/html/index.html
+     owner: root
+     group: root
+     mode: 0644
+
+- hosts: groupB
+  become: true
+  tasks:
+
+  - name: copy html file for groupB
+    copy:
+     src: files/websitegroupB.html
+     dest: /var/www/html/index.html
+     owner: root
+     group: root
+     mode: 0644
